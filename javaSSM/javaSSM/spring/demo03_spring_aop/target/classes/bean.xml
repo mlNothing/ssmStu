@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                      http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--配置service-->
+    <bean id="accountService" class="lml.service.IaccountServiceImpl">
+        <property name="accDao" ref="accountDao"></property>
+    </bean>
+    <!--配置dao-->
+    <bean id="accountDao" class="lml.dao.IaccountDaoImpl">
+        <property name="runner" ref="runner1"></property>
+        <property name="connectionUtils" ref="connectionUtils"></property>
+     </bean>
+    <bean id="connectionUtils" class="config.connectionUtils">
+        <property name="ds" ref="dataSource"></property>
+    </bean>
+    <bean id="tsmanager" class="config.transactionManager">
+        <property name="connectionUtil" ref="connectionUtils"></property>
+    </bean>
+    <!-- 配置 runner此处我们只注入了数据源，表明每条语句独立事务-->
+    <bean id="runner1" class="org.apache.commons.dbutils.QueryRunner" scope="prototype">
+      <constructor-arg name="ds" ref="dataSource"></constructor-arg>
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/springOne?serverTimezone=UTC"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="admin"></property>
+    </bean>
+
+    <!--配置切面编程-->
+
+    <aop:config>
+        <aop:aspect id="txAdvice" ref="tsmanager">
+            <!--前置通知-->
+            <aop:before method="beginTransaction" pointcut-ref="pt"></aop:before>
+            <!--后置-->
+            <aop:after-returning method="commit" pointcut-ref="pt"></aop:after-returning>
+            <!--异常-->
+            <aop:after-throwing method="rollback" pointcut-ref="pt"></aop:after-throwing>
+            <!--最后-->
+            <aop:after method="close" pointcut-ref="pt"></aop:after>
+            <aop:pointcut id="pt" expression="execution(* lml.service.*.*(..))"/>
+           <!-- <aop:around method="transactionAround" pointcut-ref="pt"></aop:around>-->
+        </aop:aspect>
+    </aop:config>
+</beans>

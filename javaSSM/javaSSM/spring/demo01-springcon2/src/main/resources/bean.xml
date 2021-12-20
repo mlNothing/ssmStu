@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 使用构造函数的方式，给 service 中的属性传值
+
+     涉及的标签：  property
+        属性：    name：找的是类中 set 方法后面的部分
+                    ref：给属性赋值是其他 bean 类型的
+                 value：给属性赋值是基本数据类型和 string 类型的    -->
+
+    <bean id="accountService" class="service.imp.IaccountSerImp">
+           <property name="age" value="18"></property>
+        <property name="birthday" ref="now"></property>
+        <property name="name" value="张三"></property>
+    </bean>
+
+
+    <bean id="now" class="java.util.Date"></bean>
+
+</beans>

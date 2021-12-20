@@ -1,0 +1,21 @@
+package lml.service;
+
+import lml.pojo.account;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface IaccountService {
+    //查询
+    List<account> findAll() throws SQLException;
+    //根据id查询
+    account findById(Integer id) throws SQLException;
+    //更新
+    void updateAcc(account acc) throws SQLException;
+    //删除
+    void deleteById(Integer id) throws SQLException;
+    //增加
+    void insert(account acc) throws SQLException;
+    //转账
+    void transfer(String sourceName , String targetName ,float monet) throws SQLException;
+}

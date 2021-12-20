@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="accountService" class="service.imp.IaccountSerImp">
+
+        <!-- 在注入集合数据时，只要结构相同，标签可以互换 -->
+
+        <property name="myList" >
+            <array>
+                <value>111</value>
+                <value>111</value>
+                <value>111</value>
+            </array>
+        </property>
+        <property name="myStrs">
+            <set>
+                <value>str</value>
+                <value>str</value>
+                <value>str</value>
+            </set>
+        </property>
+        <property name="myMap">
+            <props>
+                <prop key="may">map</prop>
+                <prop key="may1">map1</prop>
+            </props>
+        </property>
+        <property name="mySet">
+            <list>
+                <value>set</value>
+                <value>set</value>
+                <value>set</value>
+            </list>
+        </property>
+        <property name="myProps">
+            <map>
+                <entry key="pp" value="00"></entry>
+                <entry key="pp" value="00"></entry>
+                <entry key="pp" value="00"></entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

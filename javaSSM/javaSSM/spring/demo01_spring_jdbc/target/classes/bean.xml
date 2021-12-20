@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--bean标签：用于配置让spring创建对象，并且存入ioc容器之中
+        id属性：对象的唯一标识
+        class属性：指定要创建对象的全限定类名-->
+    <!--配置service-->
+    <bean id="IaccountSer" class="service.imp.IaccountSerImp"></bean>
+    <!--配置dao-->
+    <bean id="Iaccount" class="dao.imp.IaccountImp"></bean>
+
+    <!--此二种方法是：
+    使用fac类中的静态方法creaAccountSer创建对象，并存入spring容器中
+    id:指定bean的id,用于从容器中获取
+    class:指定静态工厂的全限定类名
+    factory-method:指定生产对象的静态方法
+    -->
+    <bean id="accountServive" class="ui.fac" factory-method="creaAccountSer"></bean>
+
+    <!-- 此3种方式是：    先把工厂的创建交给 spring 来管理。
+     然后在使用工厂的 bean 来调用里面的方法
+      factory-bean 属性：用于指定实例工厂 bean 的 id。
+        factory-method 属性：用于指定实例工厂中创建对象的方法。  -->
+    <bean id="instancFactory" class="ui.fac3"></bean>
+    <bean id="accountService"
+          factory-bean="instancFactory"
+          factory-method="creaAccountSer"></bean>
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+            <!-- 配置创建 spring 容器要扫描的包 -->
+    <context:component-scan base-package="lml"></context:component-scan>
+    <!-- 配置类型转换器工厂 -->
+   <!-- 第二步：在 spring 配置文件中配置类型转换器。-->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="lml.StringToDateConverter"></bean>
+            </set>
+        </property>
+    </bean>
+
+    <!-- 配置视图解析器 -->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--文件所在的目录-->
+        <property name="prefix" value="/WEB-INF/pages/"></property>
+        <!--文件的后缀名-->
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+
+    <!--开启注解springMVC的支持-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+    <!--    第三步：在 annotation-driven 标签中引用配置的类型转换服务-->
+
+</beans>

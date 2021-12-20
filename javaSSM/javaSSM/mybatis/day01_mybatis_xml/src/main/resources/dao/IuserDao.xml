@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IuserDao">
+        <resultMap id="userMap" type="damain.user">
+            <!--主键字段的对应-->
+            <id property="userId" column="id"></id>
+            <!--非主键字段的对应-->
+            <result property="userName" column="name"></result>
+            <result property="userAddress" column="address"></result>
+            <result property="userSex" column="sex"></result>
+            <result property="userBirthday" column="birthday"></result>
+        </resultMap>
+
+
+    <!--查找所有用户-->
+    <select id="FindAll" resultMap="userMap">
+        select * from user
+    </select>
+    <!--增加用户-->
+    <insert id="saveUser" parameterType="damain.user" >
+            <!--获取插入后的id -->
+            <selectKey resultType="int" keyColumn="id" keyProperty="userId" order="AFTER">
+                select last_insert_id();
+            </selectKey>
+        insert into user(username,birthday,sex,address)
+         values (#{userName},#{userBirthday},#{userSex},#{userAddress});
+    </insert>
+    <!--更新用户-->
+    <update id="updateUser" parameterType="damain.user">
+        update user set username=#{userName},birthday=#{userBirthday},sex=#{userSex},address=#{userAddress} where id =#{userId};
+    </update>
+    <!--删除指定用户-->
+    <delete id="deleteIdUser" parameterType="java.lang.Integer">
+      /*uid可以随便命名*/
+        delete from user where id=#{uid};
+    </delete>
+    <!--指定id查询用户信息-->
+    <select id="findIdUser" parameterType="INT" resultMap="userMap">
+        select *from user where id =#{id};
+    </select>
+    <!--模糊名称查询用户信息-->
+    <select id="findNameUser" resultMap="userMap" parameterType="String">
+        select  *from user where username like #{name};
+    </select>
+    <!--查询总条数-->
+    <select id="findTotal" resultType="INT">
+        select count(id) from user;
+    </select>
+
+    <!--通过QueryTo模糊名称查询用户信息-->
+    <select id="QueryToNameUser"  parameterType="damain.QueryTo" resultMap="userMap" >
+        select  *from user where username like #{user.userName};
+    </select>
+</mapper>

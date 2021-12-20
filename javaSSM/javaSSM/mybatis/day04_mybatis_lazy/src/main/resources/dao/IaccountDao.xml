@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IaccountDao">
+
+    <!--定义封装user和account 的封装-->
+        <resultMap id="findUA" type="account">
+            <id property="id" column="id"></id>
+            <result property="uid" column="uid"></result>
+            <result property="money" column="money"></result>
+            <!--一对一的关系映射，配置封装user的内容
+            select 属性指定的内容，查询用户的唯一标识
+            -->
+            <association property="user" column="uid"  javaType="user"
+                         select="dao.IuserDao.findById" >
+
+            </association>
+        </resultMap>
+    <!--查找所有用户-->
+    <select id="FindAll" resultMap="findUA">
+       select * from account
+    </select>
+
+
+    <select id="findByFindByUid" resultType="user" parameterType="int" >
+    select * from account where uid = #{uid}
+    </select>
+</mapper>

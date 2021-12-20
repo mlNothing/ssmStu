@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IuserDao">
+    <!--配置user和account 的一对多的配置-->
+    <resultMap id="userAccountFind" type="user">
+        <id property="id" column="id"></id>
+        <result property="username" column="username"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="address" column="address"></result>
+        <result property="sex" column="sex"></result>
+       <collection property="accounts" ofType="account">
+           <id property="id" column="aid"></id>
+           <id property="uid" column="uid"></id>
+           <id property="money" column="money"></id>
+       </collection>
+    </resultMap>
+    <!--查找所有用户-->
+    <select id="FindAll" resultMap="userAccountFind">
+      SELECT *FROM USER  u LEFT OUTER JOIN  account a ON u.id =a.uid
+    </select>
+
+</mapper>

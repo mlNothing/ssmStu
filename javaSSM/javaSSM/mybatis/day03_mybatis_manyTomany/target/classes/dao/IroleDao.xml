@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IroleDao">
+  <!--  &lt;!&ndash;配置user和account 的一对多的配置&ndash;&gt;
+    <resultMap id="RoleFind" type="role">
+        <id property="roleId" column="ID"></id>
+        <result property="roleName" column="ROLE_NAME"></result>
+        <result property="roleDesc" column="ROLE_DESC"></result>
+
+    </resultMap>-->
+    <resultMap id="FindAllUR" type="role">
+        <id property="roleId" column="ID"></id>
+        <result property="roleName" column="ROLE_NAME"></result>
+        <result property="roleDesc" column="ROLE_DESC"></result>
+        <collection property="user" ofType="user" >
+            <id property="id" column="id"></id>
+            <result property="username" column="username"></result>
+            <result property="sex" column="sex"></result>
+            <result property="address" column="address"></result>
+            <result property="birthday" column="birthday"></result>
+        </collection>
+    </resultMap>
+    <!--查找所有用户
+    <select id="FindAll" resultMap="RoleFind">
+      SELECT *FROM role
+    </select>-->
+
+    <select id="FindAllUser"  resultMap="FindAllUR">
+
+          SELECT *FROM role r
+          LEFT OUTER JOIN user_role ur ON r.id=ur.rid
+          LEFT OUTER JOIN USER u ON u.id=ur.uid
+    </select>
+
+</mapper>

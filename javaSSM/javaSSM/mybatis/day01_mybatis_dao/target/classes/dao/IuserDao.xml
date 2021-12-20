@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IuserDao">
+    <!--查找所有用户-->
+    <select id="FindAll" resultType="damain.user">
+        select * from user
+    </select>
+    <!--增加用户-->
+    <insert id="saveUser" parameterType="damain.user" >
+            <!--获取插入后的id -->
+            <selectKey resultType="int" keyColumn="id" keyProperty="id" order="AFTER">
+                select last_insert_id();
+            </selectKey>
+        insert into user(username,birthday,sex,address)
+         values (#{username},#{birthday},#{sex},#{address});
+    </insert>
+    <!--更新用户-->
+    <update id="updateUser" parameterType="damain.user">
+        update user set username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id =#{id};
+    </update>
+    <!--删除指定用户-->
+    <delete id="deleteIdUser" parameterType="java.lang.Integer">
+      /*uid可以随便命名*/
+        delete from user where id=#{uid};
+    </delete>
+    <!--指定id查询用户信息-->
+    <select id="findIdUser" parameterType="INT" resultType="damain.user">
+        select *from user where id =#{id};
+    </select>
+    <!--模糊名称查询用户信息-->
+    <select id="findNameUser" resultType="damain.user" parameterType="String">
+        select  *from user where username like #{name};
+    </select>
+    <!--查询总条数-->
+    <select id="findTotal" resultType="INT">
+        select count(id) from user;
+    </select>
+</mapper>
